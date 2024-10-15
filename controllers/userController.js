@@ -1,14 +1,14 @@
 const { User } = require('../models');
 
 exports.createUser = async (req, res) => {
-    const { name, email } = req.body;
+    const { name, email, files } = req.body;
 
     if (!name || !email) {
         return res.status(400).json({ error: 'Name and email are required.' });
     }
 
     try {
-        const user = await User.create({ name, email });
+        const user = await User.create({ name, email, files });
         return res.status(201).json({
             message: 'User created successfully',
             user,
@@ -98,6 +98,47 @@ exports.updateUser = async (req, res) => {
 
         user.name = name || user.name;
         user.email = email || user.email;
+        await user.save();
+
+        return res.status(200).json({
+            message: 'User updated successfully',
+            user,
+        });
+    } catch (error) {
+        console.error('Error updating user:', error);
+
+        if (error.name === 'SequelizeValidationError') {
+            return res.status(400).json({
+                error: 'Validation error',
+                details: error.errors.map(err => err.message),
+            });
+        }
+
+        return res.status(500).json({
+            error: 'Internal Server Error',
+            message: 'An unexpected error occurred while updating the user.',
+            details: error.message,
+        });
+    }
+};
+
+exports.UpdatingUser = async (req, res) => {
+    const { id } = req.params;
+    const { name, email } = req.body;
+
+    if (!name && !email) {
+        return res.status(400).json({ error: 'At least one of name or email is required to update.' });
+    }
+
+    try {
+        const user = await User.findByPk(id);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        if (name) user.name = name;
+        if (email) user.email = email;
+
         await user.save();
 
         return res.status(200).json({
