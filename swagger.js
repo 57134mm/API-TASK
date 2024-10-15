@@ -6,6 +6,7 @@ const doc = {
         description: 'API documentation for API-TASK',
     },
     host: 'localhost:3000',
+    basePath: '/api',
     schemes: ['http'],
 };
 
