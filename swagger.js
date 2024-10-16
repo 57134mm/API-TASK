@@ -8,6 +8,7 @@ const doc = {
     host: 'localhost:3000',
     basePath: '/api',
     schemes: ['http'],
+    consumes: ['multipart/form-data'],
 };
 
 const outputFile = './swagger-output.json';

@@ -1,8 +1,9 @@
 const express = require('express');
-const { createUser, getUsers, getUserById, updateUser, UpdatingUser, deleteUser } = require('../controllers/userController');
 const router = express.Router();
+const { createUser, getUsers, getUserById, updateUser, UpdatingUser, deleteUser } = require('../controllers/userController');
+const fileUpload = require('../fileUpload');
 
-router.post('/CreateUser', (req, res) => {
+router.post('/CreateUser', fileUpload, (req, res) => {
     // #swagger.tags = ['Users']
     createUser(req, res);
 });

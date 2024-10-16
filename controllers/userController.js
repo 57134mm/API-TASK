@@ -1,20 +1,37 @@
 const { User } = require('../models');
 
 exports.createUser = async (req, res) => {
-    const { name, email, files } = req.body;
+    const { name, email } = req.body;
 
     if (!name || !email) {
         return res.status(400).json({ error: 'Name and email are required.' });
     }
 
     try {
-        const user = await User.create({ name, email, files });
+        const files = req.files ? req.files.map(file => file.filename) : [];
+
+        const userData = {
+            name,
+            email,
+            files,
+            ...req.body,
+        };
+
+        const user = await User.create(userData);
+
         return res.status(201).json({
             message: 'User created successfully',
             user,
         });
     } catch (error) {
         console.error('Error creating user:', error);
+
+        if (error.name === 'SequelizeUniqueConstraintError') {
+            return res.status(400).json({
+                error: 'Email already exists',
+                message: 'A user with this email already exists.',
+            });
+        }
 
         if (error.name === 'SequelizeValidationError') {
             return res.status(400).json({

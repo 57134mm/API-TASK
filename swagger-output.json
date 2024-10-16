@@ -10,28 +10,35 @@
   "schemes": [
     "http"
   ],
+  "consumes": [
+    "multipart/form-data"
+  ],
   "paths": {
     "/CreateUser": {
       "post": {
         "tags": [
           "Users"
         ],
-        "description": "",
+        "description": "Create a new user with files",
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                }
-              }
-            }
+            "name": "name",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "files",
+            "in": "formData",
+            "required": true,
+            "type": "file",
+            "description": "Files to upload"
           }
         ],
         "responses": {
@@ -107,19 +114,16 @@
             "type": "string"
           },
           {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                }
-              }
-            }
+            "name": "name",
+            "in": "formData",
+            "type": "string",
+            "example": "John Doe"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "type": "string",
+            "example": "johndoe@example.com"
           }
         ],
         "responses": {
@@ -150,19 +154,16 @@
             "type": "string"
           },
           {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                }
-              }
-            }
+            "name": "name",
+            "in": "formData",
+            "type": "string",
+            "example": "John Doe"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "type": "string",
+            "example": "johndoe@example.com"
           }
         ],
         "responses": {
